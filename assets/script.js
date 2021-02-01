@@ -14,6 +14,11 @@ var locationFormEl = document.querySelector("#location-form");
 var nameInputEl = document.querySelector("#location");
 var weatherContainerEl = document.querySelector("#weather-container");
 var locationSearchTerm = document.querySelector("#weather-search-term");
+var temperature = document.querySelector('#temperature');
+var humidity = document.querySelector('#humidity');
+var windSpeed = document.querySelector('#wind-speed');
+var uvIndex = document.querySelector('#uv-index');
+var forecast = document.querySelectorAll('.forecast');
 
 var getWeather = function (city) {
     // format the openweather api url
@@ -28,18 +33,21 @@ var getWeather = function (city) {
                     var uviUrl = 'http://api.openweathermap.org/data/2.5/uvi?lat=' + data2.city.coord.lat + '&lon=' + data2.city.coord.lon + '&appid=2233fda853b9a2c75e41ce5024c239aa';
                     fetch(uviUrl).then(function(response3) {
                         response3.json().then(function(data3) {
-                            
-                            console.log(data1)
-                            console.log(data2)
-                            console.log(data3)
         
                             var info = {
                                 temperature: data1.main.temp,
                                 humidity: data1.main.humidity,
                                 windspeed: data1.wind.speed,
-                                uvindex: data3.value
+                                uvindex: data3.value,
+                                forecast: data2.list.map(
+                                    (element, i) => {
+                                        if (i === 0 || i === 8 || i === 16 || i === 24 || i === 32)
+                                        return element
+                                    }
+                                )
                             }
-                           // displayInfo(data, city);
+                            console.log(info)
+                           displayInfo(info);
                         })
                     })
                 })
@@ -63,33 +71,23 @@ var formSubmitHandler = function (event) {
     console.log(event);
 }
 
-var displayInfo = function(info, searchTerm) {
-    // clear old content
-    weatherContainerEl.textContent = "";
-    locationSearchTerm.textContent = searchTerm;
+var displayInfo = function(info) {
+    temperature.textContent = info.temperature 
+    humidity.textContent = info.humidity
+    windSpeed.textContent = info.windspeed
+    uvIndex.textContent = info.uvindex
+    console.log(forecast[0].children)
 
-    // loop over info
-    for (var i = 0; i < info.length; i++) {
-        // format repo name
-        var infoName = info[i].owner.login + "/" + info[i].name;
-    
-        // create a container for each repo
-        var infoEl = document.createElement("div");
-        infoEl.classList = "list-item flex-row justify-space-between align-center";
-    
-        // create a span element to hold repository name
-        var titleEl = document.createElement("span");
-        titleEl.textContent = infoName;
-    
-        // append to container
-        infoEl.appendChild(titleEl);
-    
-        // append container to the dom
-        weatherContainerEl.appendChild(infoEl);
+    for (var i = 0; i < info.forecast.length; i++) {
+        var iconurl = "http://openweathermap.org/img/w/" + info.forecast[i].weather[0].icon + ".png";
+        forecast[i].children[0].textContent = info.forecast[i].dt_txt
+        forecast[i].children[1].src = iconurl
+        forecast[i].children[2].firstChild.textContent = info.forecast[i].main.temp
+        forecast[i].children[3].firstChild.textContent = info.forecast[i].main.humidity
     }
 
-    console.log(info);
-    console.log(searchTerm);
+    // console.log(info);
+    // console.log(searchTerm);
 }
 
 
