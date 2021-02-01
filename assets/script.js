@@ -17,13 +17,33 @@ var locationSearchTerm = document.querySelector("#weather-search-term");
 
 var getWeather = function (city) {
     // format the openweather api url
-    // var apiUrl = 'http://api.openweathermap.org/data/2.5/forecast?id=' + city + '&appid=2233fda853b9a2c75e41ce5024c239aa';
-    var apiUrl = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + ',us&APPID=2233fda853b9a2c75e41ce5024c239aa';
+    var apiUrl = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&APPID=2233fda853b9a2c75e41ce5024c239aa'
 
     // make a request to the url
-    fetch(apiUrl).then(function(response) {
-        response.json().then(function(data) {
-            displayInfo(data, city);
+    fetch(apiUrl).then(function(response1) {
+        response1.json().then(function(data1) {
+            var forecastUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + '&APPID=2233fda853b9a2c75e41ce5024c239aa'
+            fetch(forecastUrl).then(function(response2) {
+                response2.json().then(function(data2) {
+                    var uviUrl = 'http://api.openweathermap.org/data/2.5/uvi?lat=' + data2.city.coord.lat + '&lon=' + data2.city.coord.lon + '&appid=2233fda853b9a2c75e41ce5024c239aa';
+                    fetch(uviUrl).then(function(response3) {
+                        response3.json().then(function(data3) {
+                            
+                            console.log(data1)
+                            console.log(data2)
+                            console.log(data3)
+        
+                            var info = {
+                                temperature: data1.main.temp,
+                                humidity: data1.main.humidity,
+                                windspeed: data1.wind.speed,
+                                uvindex: data3.value
+                            }
+                           // displayInfo(data, city);
+                        })
+                    })
+                })
+            })
         });
     });
 };
@@ -48,11 +68,31 @@ var displayInfo = function(info, searchTerm) {
     weatherContainerEl.textContent = "";
     locationSearchTerm.textContent = searchTerm;
 
+    // loop over info
+    for (var i = 0; i < info.length; i++) {
+        // format repo name
+        var infoName = info[i].owner.login + "/" + info[i].name;
+    
+        // create a container for each repo
+        var infoEl = document.createElement("div");
+        infoEl.classList = "list-item flex-row justify-space-between align-center";
+    
+        // create a span element to hold repository name
+        var titleEl = document.createElement("span");
+        titleEl.textContent = infoName;
+    
+        // append to container
+        infoEl.appendChild(titleEl);
+    
+        // append container to the dom
+        weatherContainerEl.appendChild(infoEl);
+    }
+
     console.log(info);
     console.log(searchTerm);
 }
 
+
+
 locationFormEl.addEventListener("submit", formSubmitHandler);
 
-
-524901
