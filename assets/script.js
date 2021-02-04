@@ -19,6 +19,7 @@ var humidity = document.querySelector('#humidity');
 var windSpeed = document.querySelector('#wind-speed');
 var uvIndex = document.querySelector('#uv-index');
 var forecast = document.querySelectorAll('.forecast');
+var savedSearches = document.querySelector("#savedSearches");
 
 var getWeather = function (city) {
     // format the openweather api url
@@ -33,18 +34,15 @@ var getWeather = function (city) {
                     var uviUrl = 'http://api.openweathermap.org/data/2.5/uvi?lat=' + data2.city.coord.lat + '&lon=' + data2.city.coord.lon + '&appid=2233fda853b9a2c75e41ce5024c239aa';
                     fetch(uviUrl).then(function(response3) {
                         response3.json().then(function(data3) {
+                            console.log(data1);
         
                             var info = {
                                 temperature: data1.main.temp,
                                 humidity: data1.main.humidity,
+                                cityName: data1.name,
                                 windspeed: data1.wind.speed,
                                 uvindex: data3.value,
-                                forecast: data2.list.map(
-                                    (element, i) => {
-                                        if (i === 0 || i === 8 || i === 16 || i === 24 || i === 32)
-                                        return element
-                                    }
-                                )
+                                forecast: data2.list.filter((element, i) => i === 0 || i === 8 || i === 16 || i === 24 || i === 32)
                             }
                             console.log(info)
                            displayInfo(info);
@@ -76,6 +74,7 @@ var displayInfo = function(info) {
     humidity.textContent = info.humidity
     windSpeed.textContent = info.windspeed
     uvIndex.textContent = info.uvindex
+    locationSearchTerm.textContent = info.cityName
     console.log(forecast[0].children)
 
     for (var i = 0; i < info.forecast.length; i++) {
@@ -86,10 +85,21 @@ var displayInfo = function(info) {
         forecast[i].children[3].firstChild.textContent = info.forecast[i].main.humidity
     }
 
-    // console.log(info);
+    console.log(info);
     // console.log(searchTerm);
 }
 
+var searches = localStorage.getItem("RecentSearches")
+    if (searches) {
+        savedSearches.appendChild(document.createElement("select"))
+        for (var i = 0; i < searches.length; i++) {
+            var option = document.createElement("option")
+            option.value = searches[i].cityName
+            option.textContent = searches[i].cityName
+            option.addEventListener("click", getWeather(searches[i].cityName))
+            savedSearches.lastChild.appendChild(option)
+        }
+    }
 
 
 locationFormEl.addEventListener("submit", formSubmitHandler);
