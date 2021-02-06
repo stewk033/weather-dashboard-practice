@@ -92,8 +92,8 @@ var formSubmitHandler = function (event) {
 // function to display weather info
 var displayInfo = function(info) {
     temperature.textContent = `${Math.floor(parseFloat(info.temperature) - 273.15) * 9/5 + 32} °F`
-    humidity.textContent = info.humidity
-    windSpeed.textContent = info.windspeed
+    humidity.textContent = info.humidity + '%'
+    windSpeed.textContent = info.windspeed + ' mph'
     uvIndex.textContent = info.uvindex
     locationSearchTerm.textContent = info.cityName
     console.log(forecast[0].children)
@@ -104,7 +104,7 @@ var displayInfo = function(info) {
         forecast[i].children[0].textContent = info.forecast[i].dt_txt
         forecast[i].children[1].src = iconurl
         forecast[i].children[2].firstChild.textContent = `Temp: ${Math.floor(parseFloat(info.forecast[i].main.temp) - 273.15) * 9/5 + 32} °F`
-        forecast[i].children[3].firstChild.textContent = 'Humidity: ' + info.forecast[i].main.humidity
+        forecast[i].children[3].firstChild.textContent = 'Humidity: ' + info.forecast[i].main.humidity + '%'
     }
 
     console.log(info);
