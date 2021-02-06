@@ -22,6 +22,37 @@ var forecast = document.querySelectorAll('.forecast');
 var savedSearches = document.querySelector("#savedSearches");
 
 var getWeather = function (city) {
+
+    var searches = localStorage.getItem("RecentSearches")? JSON.parse(localStorage.getItem("RecentSearches")):[]
+    var flag = false
+        if (searches) {
+            for (var i = 0; i < searches.length; i++) {
+                if (searches[i] === city) flag = true
+            }
+        }
+
+        if (searches.length === 0) {
+            savedSearches.appendChild(document.createElement("select"))
+            var option = document.createElement("option")
+                option.value = city
+                option.textContent = city
+                savedSearches.lastChild.addEventListener("change", () => {
+                    getWeather(savedSearches.lastChild.value)
+                })
+                savedSearches.lastChild.appendChild(option)
+                searches.push(city)
+                localStorage.setItem("RecentSearches", JSON.stringify(searches))
+        }
+            else if (!flag) {
+            var option = document.createElement("option")
+                option.value = city
+                option.textContent = city
+                savedSearches.lastChild.appendChild(option)
+                searches.push(city)
+                localStorage.setItem("RecentSearches", JSON.stringify(searches))
+            }
+        
+
     // format the openweather api url
     var apiUrl = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&APPID=2233fda853b9a2c75e41ce5024c239aa'
 
@@ -42,7 +73,7 @@ var getWeather = function (city) {
                                 cityName: data1.name,
                                 windspeed: data1.wind.speed,
                                 uvindex: data3.value,
-                                forecast: data2.list.filter((element, i) => i === 0 || i === 8 || i === 16 || i === 24 || i === 32)
+                                forecast: data2.list.filter((element, i) => i === 4 || i === 12 || i === 20 || i === 28 || i === 36)
                             }
                             console.log(info)
                            displayInfo(info);
@@ -53,7 +84,6 @@ var getWeather = function (city) {
         });
     });
 };
-// getWeather()
 
 var formSubmitHandler = function (event) {
     event.preventDefault();
@@ -70,33 +100,37 @@ var formSubmitHandler = function (event) {
 }
 
 var displayInfo = function(info) {
-    temperature.textContent = info.temperature 
+    temperature.textContent = `${Math.floor(parseFloat(info.temperature) - 273.15) * 9/5 + 32} °F`
     humidity.textContent = info.humidity
     windSpeed.textContent = info.windspeed
     uvIndex.textContent = info.uvindex
     locationSearchTerm.textContent = info.cityName
     console.log(forecast[0].children)
 
+// adding icons to 5 day forecast
     for (var i = 0; i < info.forecast.length; i++) {
         var iconurl = "http://openweathermap.org/img/w/" + info.forecast[i].weather[0].icon + ".png";
         forecast[i].children[0].textContent = info.forecast[i].dt_txt
         forecast[i].children[1].src = iconurl
-        forecast[i].children[2].firstChild.textContent = info.forecast[i].main.temp
-        forecast[i].children[3].firstChild.textContent = info.forecast[i].main.humidity
+        forecast[i].children[2].firstChild.textContent = `Temp: ${Math.floor(parseFloat(info.forecast[i].main.temp) - 273.15) * 9/5 + 32} °F`
+        forecast[i].children[3].firstChild.textContent = 'Humidity: ' + info.forecast[i].main.humidity
     }
 
     console.log(info);
-    // console.log(searchTerm);
 }
 
-var searches = localStorage.getItem("RecentSearches")
+// recording recent searches
+var searches = JSON.parse(localStorage.getItem("RecentSearches"))
+console.log(searches)
     if (searches) {
         savedSearches.appendChild(document.createElement("select"))
         for (var i = 0; i < searches.length; i++) {
             var option = document.createElement("option")
-            option.value = searches[i].cityName
-            option.textContent = searches[i].cityName
-            option.addEventListener("click", getWeather(searches[i].cityName))
+            option.value = searches[i]
+            option.textContent = searches[i]
+            savedSearches.lastChild.addEventListener("change", () => {
+                getWeather(savedSearches.lastChild.value)
+            })
             savedSearches.lastChild.appendChild(option)
         }
     }

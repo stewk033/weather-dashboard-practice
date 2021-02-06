@@ -18,7 +18,7 @@ h1 {
 span {
     font-size: 1em;
 }
-li:hover {
-    background-color: lightslategray;
+button:hover {
+    background-color: rgb(145, 195, 245);
     text-decoration: underline;
 }
