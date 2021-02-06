@@ -45,15 +45,15 @@ var getWeather = function (city) {
         
 
     // format the openweather api url
-    var apiUrl = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&APPID=2233fda853b9a2c75e41ce5024c239aa'
+    var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&APPID=2233fda853b9a2c75e41ce5024c239aa'
 
     // make a request to the url
     fetch(apiUrl).then(function(response1) {
         response1.json().then(function(data1) {
-            var forecastUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + '&APPID=2233fda853b9a2c75e41ce5024c239aa'
+            var forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&APPID=2233fda853b9a2c75e41ce5024c239aa'
             fetch(forecastUrl).then(function(response2) {
                 response2.json().then(function(data2) {
-                    var uviUrl = 'http://api.openweathermap.org/data/2.5/uvi?lat=' + data2.city.coord.lat + '&lon=' + data2.city.coord.lon + '&appid=2233fda853b9a2c75e41ce5024c239aa';
+                    var uviUrl = 'https://api.openweathermap.org/data/2.5/uvi?lat=' + data2.city.coord.lat + '&lon=' + data2.city.coord.lon + '&appid=2233fda853b9a2c75e41ce5024c239aa';
                     fetch(uviUrl).then(function(response3) {
                         response3.json().then(function(data3) {
                             console.log(data1);
@@ -93,14 +93,14 @@ var formSubmitHandler = function (event) {
 var displayInfo = function(info) {
     temperature.textContent = `${Math.floor(parseFloat(info.temperature) - 273.15) * 9/5 + 32} °F`
     humidity.textContent = info.humidity + '%'
-    windSpeed.textContent = info.windspeed + ' mph'
+    windSpeed.textContent = `${info.windspeed} mph`
     uvIndex.textContent = info.uvindex
     locationSearchTerm.textContent = info.cityName
     console.log(forecast[0].children)
 
 // adding icons to 5 day forecast
     for (var i = 0; i < info.forecast.length; i++) {
-        var iconurl = "http://openweathermap.org/img/w/" + info.forecast[i].weather[0].icon + ".png";
+        var iconurl = "https://openweathermap.org/img/w/" + info.forecast[i].weather[0].icon + ".png";
         forecast[i].children[0].textContent = info.forecast[i].dt_txt
         forecast[i].children[1].src = iconurl
         forecast[i].children[2].firstChild.textContent = `Temp: ${Math.floor(parseFloat(info.forecast[i].main.temp) - 273.15) * 9/5 + 32} °F`
