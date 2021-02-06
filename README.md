@@ -6,35 +6,36 @@ This assignment requires the creation of a dashboard application which provides 
 
 ## User Story
 
-AS A traveler
-I WANT to see the weather outlook for multiple cities
-SO THAT I can plan a trip accordingly
+* _AS A traveler_
+* _I WANT to see the weather outlook for multiple cities_
+* _SO THAT I can plan a trip accordingly_
 
 ## Acceptance Criteria
 
-GIVEN a weather dashboard with form inputs
-WHEN I search for a city
-THEN I am presented with current and future conditions for that city and that city is added to the search history
-WHEN I view current weather conditions for that city
-THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
-WHEN I view the UV index
-THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
-WHEN I view future weather conditions for that city
-THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
-WHEN I click on a city in the search history
-THEN I am again presented with current and future conditions for that city
+* _GIVEN a weather dashboard with form inputs_
+* _WHEN I search for a city_
+* _THEN I am presented with current and future conditions for that city and that city is added to the search history_
+* _WHEN I view current weather conditions for that city_
+* _THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index_
+* _WHEN I view the UV index_
+* _THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe_
+* _WHEN I view future weather conditions for that city_
+* _THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity_
+* _WHEN I click on a city in the search history_
+* _THEN I am again presented with current and future conditions for that city_
 
 ## Credits
 
 Provided with a mock-up from which to frame my app.
 
-![MOCKUP] ()
+![MOCKUP] (https://github.com/stewk033/weather-dashboard/blob/main/assets/06-server-side-apis-homework-demo.png)
 
 ## My Solution
 
-Live URL: ()
+Live URL: (https://stewk033.github.io/weather-dashboard/)
 
-Refactored Code:
+My Code:
 
-- [HTML] ()
-- [CSS] ()
+- [HTML] (https://github.com/stewk033/weather-dashboard/blob/main/index.html)
+- [CSS] (https://github.com/stewk033/weather-dashboard/blob/main/assets/style.css)
+- [JS] (https://github.com/stewk033/weather-dashboard/blob/main/assets/script.js)
