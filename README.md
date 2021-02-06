@@ -28,7 +28,7 @@ This assignment requires the creation of a dashboard application which provides 
 
 Provided with a mock-up from which to frame my app.
 
-![MOCKUP] (https://github.com/stewk033/weather-dashboard/blob/main/assets/06-server-side-apis-homework-demo.png)
+![MOCKUP](https://github.com/stewk033/weather-dashboard/blob/main/assets/06-server-side-apis-homework-demo.png)
 
 ## My Solution
 
